@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CodeQuest - HomePage</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css">
+
+    <!-- Your Custom CSS -->
+    <link rel="stylesheet" href="/CodeQuest/Frontend/css/homepage.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+
+<body>
+    <header>
+        <!-- Navigation bar -->
+        <nav class="navbar">
+            <div class="container-fluid">
+                <a class="logo" href="#">Code<span>Quest</span></a>
+                <div class="contentofnav">
+                    <a class="nav-link" href="#">Home</a>
+                    <a class="nav-link" href="#" id="open-about">About Us</a>
+                    <!-- <a class="nav-link" href="#">Profile</a> -->
+                    <form class="d-flex" role="search">
+                        <input class="form-control me-2" type="search" id="searchInput" placeholder="Search"
+                            aria-label="Search" />
+                        <button class="btn btn-outline-success" id="searchBtn" type="submit">Search</button>
+                    </form>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Challenges Modal -->
+    <div class="modal-container" id="challenges-modal-container" style="display: none;">
+        <div class="modal" id="challenges-modal">
+            <button class="close-button" id="close-challenges">
+                <img src="/CodeQuest/Frontend/images/close_8860496.png" alt="Close">
+            </button>
+            <h3>Select a Language Challenge</h3>
+            <ul class="language-list">
+                <li><a href="#" onclick="openChallenge('c_problem.html')">C</a></li>
+                <li><a href="#" onclick="openChallenge('cpp_problem.html')">C++</a></li>
+                <li><a href="#" onclick="openChallenge('java_problem.html')">Java</a></li>
+                <li><a href="#" onclick="openChallenge('python_problem.html')">Python</a></li>
+                <li><a href="#" onclick="openChallenge('php_problem.html')">PHP</a></li>
+                <li><a href="#" onclick="openChallenge('js_problem.html')">JavaScript</a></li>
+                <li><a href="#" onclick="openChallenge('kotlin_problem.html')">Kotlin</a></li>
+                <li><a href="#" onclick="openChallenge('sql_problem.html')">SQL</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <!--main coding-->
+    <main class="container mt-4">
+
+        <div class="main_container_with_sidebar">
+            <!-- section Sidebar on the left -->
+            <section class="sidebar">
+                <header>User Panel</header>
+                <ul>
+                    <li><a href="profile.html" class="no-underline"> Profile</a></li>
+                    <li><a href="leaderboard.html" class="no-underline"> Leaderboard</a></li>
+                    <li><a id="open-challenges" class="no-underline"> Challenges</a></li>
+                    <li><a class="no-underline" href="/CodeQuest/Frontend/html/askCodeBot.html"> Ask-CodeBot</a></li>
+                    <li><a class="no-underline" href="/CodeQuest/DataBase/logout.php">Logout</a></li>
+                </ul>
+            </section>
+
+            <!-- Main content area -->
+            <section class="main_container">
+                <div class="textbox">
+                    <h1>Welcome to CodeQuest</h1>
+                    <p class="tagline">Code today, conquer tomorrow.</p>
+                    <div class="tagline">Login to level up your coding skills!</div>
+                </div>
+                <form action="/CodeQuest/DataBase/login.php" method="POST">
+                    <div class="sign-in-box">
+                        <input type="text" placeholder="Enter your Email" name="email" required>
+                        <input type="password" placeholder="Enter your Password" name="password" required>
+                        <button type="submit" name="submit">Login</button>
+                    </div>
+                </form>
+                <p style="color: white;">Don't have an account? <a href="signup.html"
+                        style="color: #00ffff;">Register</a></p>
+            </section>
+        </div>
+
+        <!--about us modal-->
+        <div class="modal-container" id="about-modal-container" style="display: none;">
+            <div class="modal" id="about-modal">
+                <button class="close-button" id="close-about">
+                    <img src="/CodeQuest/Frontend/images/close_8860496.png" alt="Close" loading="lazy" decoding="async"
+                        width="24" height="24">
+                </button>
+                <p>
+                    <strong>CodeQuest</strong> is a platform designed to help students and users enhance their skills
+                    and improve their logical reasoning abilities through solving engaging challenges.
+                    We offer a wide range of coding problems and puzzles that cater to different skill levels, allowing
+                    users to test and expand their problem-solving expertise.
+                    Whether you're looking to sharpen your coding proficiency or tackle complex challenges, CodeQuest
+                    provides the tools and environment to grow your abilities, track your progress, and unlock new
+                    levels of learning.
+                </p>
+            </div>
+        </div>
+        <!-- Section of Question Cards -->
+        <section class="question_container">
+            <!-- Card 1 -->
+            <div class="card">
+                <img src="/CodeQuest/Frontend/images/C_Programming_Language.svg.png" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">C</h5>
+                    <p class="card-text">A powerful, low-level programming language used to develop system software,
+                        embedded systems, and operating systems.</p>
+                    <a href="c.html" class="btn">Start</a>
+                </div>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="card">
+                <img src="/CodeQuest/Frontend/images/ISO_C++_Logo.svg.png" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">C++</h5>
+                    <p class="card-text">C++ is an extension of C that adds object-oriented features. It's widely used
+                        in system software, games, and performance-critical applications.</p>
+                    <a href="cpp.html" class="btn">start</a>
+                </div>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="card">
+                <img src="/CodeQuest/Frontend/images/Java-Logo.png" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">Java</h5>
+                    <p class="card-text">A high-level, object-oriented language known for its portability and used for
+                        building web, desktop, and Android applications.</p>
+                    <a href="java.html" class="btn">Start</a>
+                </div>
+            </div>
+
+            <!-- Card 4-->
+            <div class="card">
+                <img src="/CodeQuest/Frontend/images/python.png" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">Python</h5>
+                    <p class="card-text">A high-level, interpreted language valued for its readability. Often used in
+                        AI, web development, and data science.</p>
+                    <a href="python.html" class="btn">Start</a>
+                </div>
+            </div>
+
+            <!-- Card 5-->
+            <div class="card">
+                <img src="/CodeQuest/Frontend/images/php.png" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">PHP</h5>
+                    <p class="card-text">A server-side scripting language used for web development. It powers many
+                        websites and CMS platforms like WordPress.</p>
+                    <a href="php.html" class="btn">start</a>
+                </div>
+            </div>
+
+            <!-- Card 6-->
+            <div class="card">
+                <img src="/CodeQuest/Frontend/images/javascript.jpg" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">Javascript</h5>
+                    <p class="card-text">A scripting language mainly used to build interactive web pages. It runs in
+                        browsers and supports frontend and backend development.</p>
+                    <a href="javascript.html" class="btn">Start</a>
+                </div>
+            </div>
+
+            <!-- Card 7-->
+            <div class="card">
+                <img src="/CodeQuest/Frontend/images/kotlin.png" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">Kotlin</h5>
+                    <p class="card-text">A modern language interoperable with Java. It is officially supported for
+                        Android development and used in mobile and backend projects.</p>
+                    <a href="kotlin.html" class="btn">Start</a>
+                </div>
+            </div>
+
+            <!-- Card 8-->
+            <div class="card">
+                <img src="/CodeQuest/Frontend/images/sql.png" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">SQL</h5>
+                    <p class="card-text">A structured query language used for managing relational databases. It is
+                        widely used in data storage, retrieval, and reporting systems.</p>
+                    <a href="sql.html" class="btn">Start</a>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="text-center mt-5">
+        <div class="footer">
+            <p>&copy; 2025 <strong>CodeQuest</strong>. All rights reserved.</p>
+        </div>
+    </footer>
+
+
+    <!-- Bootstrap JS + Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.min.js"></script>
+    <!--project logic javascript-->
+    <script src="/CodeQuest/Frontend/js/script.js"></script>
+
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        const status = params.get("status");
+
+        if (status === "success") {
+            alert("✅ Logged in successfully!");
+        } else if (status === "wrongpass") {
+            alert("❌ Incorrect password!");
+        } else if (status === "notfound") {
+            alert("❌ User not found!");
+        }
+
+        // ✅ Optional: Clear URL parameters after showing alert
+        if (window.history.replaceState) {
+            window.history.replaceState({}, document.title, window.location.pathname);
+        }
+    </script>
+</body>
+
+</html>

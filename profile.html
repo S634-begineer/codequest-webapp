@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Profile Page</title>
+    <!--internal css using for pofile page-->
+    <style>
+        body {
+            background-color: #121212;
+            /* dark background like signup */
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        .profile-container {
+            width: 90%;
+            max-width: 600px;
+            margin: 40px 20px;
+            padding: 20px;
+            border: 2px solid #00ffff;
+            /* cyan border */
+            border-radius: 10px;
+            background-color: #1f1f1f;
+            /* darker container background */
+            color: white;
+            display: grid;
+            grid-template-columns: 140px 1fr;
+            grid-gap: 20px;
+            align-items: start;
+        }
+
+        .profile-pic-wrapper {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            grid-row: 1 / 3;
+        }
+
+        .profile-pic {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #00ffff;
+            /* cyan border */
+            display: block;
+        }
+
+        .camera-icon {
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            background: #00ffff;
+            /* cyan background */
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            border: 2px solid #121212;
+            /* match body background */
+        }
+
+        .camera-icon:hover {
+            background: #00bfbf;
+            /* slightly darker cyan on hover */
+        }
+
+        .camera-icon svg {
+            fill: #121212;
+            /* dark icon color */
+            width: 18px;
+            height: 18px;
+        }
+
+        .name-display {
+            font-size: 1.5em;
+            font-weight: bold;
+            align-self: center;
+            padding-left: 10px;
+            word-break: break-word;
+        }
+
+        .fields {
+            grid-column: 2 / 3;
+            margin-top: 10px;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 10px;
+            margin-bottom: 5px;
+            color: #00ffff;
+            /* cyan label text */
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="date"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: none;
+            font-size: 1em;
+            box-sizing: border-box;
+            background-color: #333;
+            /* dark input background */
+            color: white;
+        }
+
+        input:disabled,
+        textarea:disabled,
+        select:disabled {
+            background-color: #222;
+            /* slightly lighter disabled bg */
+            color: #aaa;
+            /* lighter disabled text */
+        }
+
+        textarea {
+            resize: vertical;
+        }
+
+        .button-row {
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-between;
+            grid-column: 2 / 3;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #00ffff;
+            /* cyan button */
+            color: #121212;
+            /* dark text */
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+        button:disabled {
+            background-color: #555;
+            cursor: not-allowed;
+        }
+
+        button:hover:not(:disabled) {
+            background-color: #00bfbf;
+        }
+
+        @media (max-width: 480px) {
+            .profile-container {
+                grid-template-columns: 1fr;
+                grid-gap: 15px;
+                width: 95%;
+            }
+
+            .profile-pic-wrapper {
+                grid-row: 1;
+                justify-self: center;
+            }
+
+            .name-display {
+                grid-row: 2;
+                text-align: center;
+                padding-left: 0;
+            }
+
+            .fields {
+                grid-column: 1;
+                margin-top: 0;
+            }
+
+            .button-row {
+                grid-column: 1;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="profile-container">
+        <div class="profile-pic-wrapper">
+            <img id="profilePic" src="https://via.placeholder.com/120?text=User" alt="Profile Picture"
+                class="profile-pic" />
+            <div class="camera-icon" id="cameraIcon" title="Change Profile Picture">
+                <svg viewBox="0 0 24 24">
+                    <path
+                        d="M12 5c-3.86 0-7 3.14-7 7s3.14 7 7 7 7-3.14 7-7-3.14-7-7-7zm0 12a5 5 0 1 1 0-10 5 5 0 0 1 0 10zM4 7h3l2-3h6l2 3h3v12H4V7z" />
+                </svg>
+            </div>
+            <input type="file" id="fileInput" accept="image/*" style="display:none" />
+        </div>
+
+        <div class="name-display" id="nameDisplay">Your Name</div>
+
+        <div class="fields">
+            <label for="name">Name</label>
+            <input type="text" id="name" disabled />
+
+            <label for="email">Email</label>
+            <input type="email" id="email" disabled />
+
+            <label for="phone">Phone Number</label>
+            <input type="text" id="phone" disabled />
+
+            <label for="dob">Date of Birth</label>
+            <input type="date" id="dob" disabled />
+
+            <label for="gender">Gender</label>
+            <select id="gender" disabled>
+                <option value="">-- Select Gender --</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+            </select>
+
+            <label for="address">Address</label>
+            <input type="text" id="address" disabled />
+
+            <label for="about">About Me</label>
+            <textarea id="about" rows="4" disabled></textarea>
+
+            <div class="button-row">
+                <button id="editBtn">Edit</button>
+                <button id="saveBtn" disabled>Save</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const profilePic = document.getElementById('profilePic');
+        const fileInput = document.getElementById('fileInput');
+        const cameraIcon = document.getElementById('cameraIcon');
+        const nameInput = document.getElementById('name');
+        const nameDisplay = document.getElementById('nameDisplay');
+        const saveBtn = document.getElementById('saveBtn');
+        const editBtn = document.getElementById('editBtn');
+        const inputs = document.querySelectorAll('input, textarea, select');
+        function getUsername() {
+            const profileData = JSON.parse(localStorage.getItem('profileData'));
+            return profileData?.name?.trim() || "Guest";
+        }
+
+
+        editBtn.onclick = () => {
+            inputs.forEach(el => el.disabled = false);
+            saveBtn.disabled = false;
+            editBtn.disabled = true;
+        };
+
+        nameInput.addEventListener('input', () => {
+            nameDisplay.textContent = nameInput.value.trim() || 'Your Name';
+        });
+
+        cameraIcon.onclick = () => {
+            if (!nameInput.disabled) {
+                fileInput.click();
+            }
+        };
+
+        fileInput.onchange = e => {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = () => {
+                profilePic.src = reader.result;
+            };
+            reader.readAsDataURL(file);
+        };
+
+        saveBtn.onclick = () => {
+            const profileData = {
+                name: nameInput.value.trim(),
+                email: document.getElementById('email').value.trim(),
+                phone: document.getElementById('phone').value.trim(),
+                dob: document.getElementById('dob').value,
+                gender: document.getElementById('gender').value,
+                address: document.getElementById('address').value.trim(),
+                about: document.getElementById('about').value.trim(),
+                profilePic: profilePic.src,
+            };
+
+            localStorage.setItem('profileData', JSON.stringify(profileData));
+
+            alert('Profile saved successfully.');
+
+            inputs.forEach(el => el.disabled = true);
+            saveBtn.disabled = true;
+            editBtn.disabled = false;
+        };
+
+        window.onload = () => {
+            const savedData = JSON.parse(localStorage.getItem('profileData'));
+            if (savedData) {
+                nameInput.value = savedData.name || '';
+                email.value = savedData.email || '';
+                phone.value = savedData.phone || '';
+                dob.value = savedData.dob || '';
+                gender.value = savedData.gender || '';
+                address.value = savedData.address || '';
+                about.value = savedData.about || '';
+                profilePic.src = savedData.profilePic || "https://via.placeholder.com/120?text=User";
+
+                nameDisplay.textContent = savedData.name || 'Your Name';
+
+                inputs.forEach(el => el.disabled = true);
+                saveBtn.disabled = true;
+                editBtn.disabled = false;
+            }
+        };
+    </script>
+</body>
+
+</html>

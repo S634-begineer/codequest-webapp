@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>PHP Programming Challenge</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/codemirror.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/theme/monokai.min.css" />
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #121212;
+            color: #f0f0f0;
+            padding: 20px;
+            max-width: 900px;
+            margin: auto;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        #timer {
+            font-size: 18px;
+            margin-bottom: 20px;
+            text-align: center;
+            color: #61dafb;
+        }
+
+        #question {
+            background-color: #282c34;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+
+        .CodeMirror {
+            height: 300px;
+            border-radius: 6px;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        #buttons {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        button {
+            background-color: #61dafb;
+            border: none;
+            color: black;
+            padding: 10px 18px;
+            margin: 0 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover:not(:disabled) {
+            background-color: #21a1f1;
+            color: white;
+        }
+
+        button:disabled {
+            background-color: #888;
+            cursor: not-allowed;
+            color: #ccc;
+        }
+
+        #outputBox {
+            background-color: #282c34;
+            border-radius: 6px;
+            min-height: 100px;
+            padding: 12px;
+            font-family: monospace;
+            white-space: pre-wrap;
+            color: #00ffff;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>PHP Programming Challenge</h1>
+    <div id="timer">Time Left: 01:00:00</div>
+    <div id="question"></div>
+    <textarea id="codeEditor"></textarea>
+
+    <div id="buttons">
+        <button id="compileBtn">Compile</button>
+        <button id="runBtn" disabled>Run</button>
+        <button id="nextLevelBtn" disabled>Next Level</button>
+    </div>
+
+    <div id="outputBox">// Output will appear here</div>
+
+    <!-- CodeMirror core CSS & JS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/codemirror.min.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/codemirror.min.js"></script>
+
+<!-- Required modes -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/xml/xml.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/javascript/javascript.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/css/css.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/clike/clike.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/php/php.min.js"></script>
+
+    <script>
+        // === Questions for 3 levels (PHP programming) ===
+        const questions = [
+            "Level 1 (Medium): Write a PHP class to manage a bank account with deposit and withdraw methods.",
+            "Level 2 (Medium-Hard): Implement a PHP class for complex numbers with addition and subtraction methods.",
+            "Level 3 (Hard): Use an associative array in PHP to count the frequency of words in a given paragraph."
+        ];
+
+const starterCode = [
+`<?php
+// Your code here
+?>`,
+
+`<?php
+// Your code here
+?>`,
+
+`<?php
+// Your code here
+?>`
+];
+
+// Judge0 language ID for PHP
+        const languageId = 68;
+
+        let currentLevel = 0;
+
+        // Timer setup
+        const ONE_HOUR = 60 * 60; // seconds
+        let timeLeft = ONE_HOUR;
+        const timerEl = document.getElementById("timer");
+
+        function formatTime(seconds) {
+            const h = Math.floor(seconds / 3600).toString().padStart(2, '0');
+            const m = Math.floor((seconds % 3600) / 60).toString().padStart(2, '0');
+            const s = (seconds % 60).toString().padStart(2, '0');
+            return `${h}:${m}:${s}`;
+        }
+
+        function startTimer() {
+            const intervalId = setInterval(() => {
+                if (timeLeft <= 0) {
+                    clearInterval(intervalId);
+                    alert("Time is up! Challenge ended.");
+                    disableAll();
+                } else {
+                    timeLeft--;
+                    timerEl.textContent = "Time Left: " + formatTime(timeLeft);
+                }
+            }, 1000);
+        }
+
+        function disableAll() {
+            compileBtn.disabled = true;
+            runBtn.disabled = true;
+            nextLevelBtn.disabled = true;
+            editor.setOption("readOnly", true);
+        }
+
+        // Setup CodeMirror editor
+        const editor = CodeMirror.fromTextArea(document.getElementById("codeEditor"), {
+            lineNumbers: true,
+            mode: "application/x-httpd-php",
+            theme: "monokai",
+            tabSize: 4,
+            indentUnit: 4,
+            matchBrackets: true,
+        });
+
+        // Buttons
+        const compileBtn = document.getElementById("compileBtn");
+        const runBtn = document.getElementById("runBtn");
+        const nextLevelBtn = document.getElementById("nextLevelBtn");
+        const outputBox = document.getElementById("outputBox");
+        const questionDiv = document.getElementById("question");
+
+        function updateLevel() {
+            questionDiv.textContent = questions[currentLevel];
+            editor.setValue(starterCode[currentLevel]);
+            outputBox.textContent = "// Output will appear here";
+            runBtn.disabled = true;
+            nextLevelBtn.disabled = true;
+            compileBtn.disabled = false;
+        }
+
+        updateLevel();
+
+        // Judge0 API details
+        const RAPIDAPI_KEY = "7eb1ea432fmsh408e1d97c429e8ap10f9c2jsn3491fdd5d1ad";
+        const RAPIDAPI_HOST = "judge0-ce.p.rapidapi.com";
+
+        // Helper to create submission on Judge0
+        async function createSubmission(sourceCode) {
+            const response = await fetch("https://judge0-ce.p.rapidapi.com/submissions?base64_encoded=false&wait=false", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-RapidAPI-Key": RAPIDAPI_KEY,
+                    "X-RapidAPI-Host": RAPIDAPI_HOST,
+                },
+                body: JSON.stringify({
+                    source_code: sourceCode,
+                    language_id: languageId,
+                    stdin: "",
+                }),
+            });
+            if (!response.ok) {
+                const errorText = await response.text();
+                throw new Error(`HTTP ${response.status} - ${errorText}`);
+            }
+            return response.json();
+        }
+
+        // Helper to get submission result
+        async function getSubmission(token) {
+            const response = await fetch(`https://judge0-ce.p.rapidapi.com/submissions/${token}?base64_encoded=false`, {
+                method: "GET",
+                headers: {
+                    "X-RapidAPI-Key": RAPIDAPI_KEY,
+                    "X-RapidAPI-Host": RAPIDAPI_HOST,
+                },
+            });
+            if (!response.ok) {
+                const errorText = await response.text();
+                throw new Error(`HTTP ${response.status} - ${errorText}`);
+            }
+            return response.json();
+        }
+
+        // Poll submission until it finishes or error
+        async function waitForResult(token) {
+            while (true) {
+                const result = await getSubmission(token);
+                if (result.status.id >= 3) { // 1-queued,2-processing,3-accepted,4-wrong answer,5-etc
+                    return result;
+                }
+                await new Promise(r => setTimeout(r, 1000));
+            }
+        }
+
+        compileBtn.addEventListener("click", async () => {
+            const sourceCode = editor.getValue().trim();
+
+            if (!sourceCode) {
+                alert("Please enter your PHP code before compiling.");
+                return;
+            }
+
+            compileBtn.disabled = true;
+            runBtn.disabled = true;
+            nextLevelBtn.disabled = true;
+            outputBox.textContent = "Compiling...";
+
+            try {
+                const submission = await createSubmission(sourceCode);
+
+                // Poll until compilation is finished
+                const result = await waitForResult(submission.token);
+
+                if (result.compile_output) {
+                    outputBox.textContent = `Compilation Error:\n${result.compile_output}`;
+                    runBtn.disabled = true;
+                    nextLevelBtn.disabled = true;
+                } else if (result.stderr) {
+                    outputBox.textContent = `Runtime Error:\n${result.stderr}`;
+                    runBtn.disabled = false; // Let user try running if you want
+                    nextLevelBtn.disabled = true;
+                } else {
+                    outputBox.textContent = "Compilation successful! You can now run your code.";
+                    runBtn.disabled = false;
+                    nextLevelBtn.disabled = false;
+                }
+            } catch (err) {
+                outputBox.textContent = "Error during compilation:\n" + err.message;
+                runBtn.disabled = true;
+                nextLevelBtn.disabled = true;
+            } finally {
+                compileBtn.disabled = false;
+            }
+        });
+
+        runBtn.addEventListener("click", async () => {
+            const sourceCode = editor.getValue().trim();
+
+            if (!sourceCode) {
+                alert("Please enter your PHP code before running.");
+                return;
+            }
+
+            runBtn.disabled = true;
+            compileBtn.disabled = true;
+            nextLevelBtn.disabled = true;
+            outputBox.textContent = "Running... Please wait.";
+
+            try {
+                const submission = await createSubmission(sourceCode);
+
+                const result = await waitForResult(submission.token);
+
+                if (result.stdout) {
+                    outputBox.textContent = `Output:\n${result.stdout}`;
+                } else if (result.stderr) {
+                    outputBox.textContent = `Runtime Error:\n${result.stderr}`;
+                } else if (result.compile_output) {
+                    outputBox.textContent = `Compilation Error:\n${result.compile_output}`;
+                } else {
+                    outputBox.textContent = "No output from the program.";
+                }
+
+                nextLevelBtn.disabled = false;
+            } catch (err) {
+                outputBox.textContent = "Error during execution:\n" + err.message;
+                nextLevelBtn.disabled = true;
+            } finally {
+                runBtn.disabled = false;
+                compileBtn.disabled = false;
+            }
+        });
+
+        nextLevelBtn.addEventListener("click", () => {
+            if (currentLevel < questions.length - 1) {
+                currentLevel++;
+                updateLevel();
+            } else {
+                alert("You have completed all levels!");
+                disableAll();
+            }
+        });
+
+        startTimer();
+    </script>
+</body>
+
+</html>
